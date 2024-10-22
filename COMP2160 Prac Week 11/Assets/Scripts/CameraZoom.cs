@@ -21,6 +21,7 @@ public class CameraZoom : MonoBehaviour
     [SerializeField] private float current;
     [SerializeField] private float zoom;
     [SerializeField] private float zoomSpeed;
+    private float adjustedTime = 2.0f;
     #endregion
 
 
@@ -39,10 +40,10 @@ public class CameraZoom : MonoBehaviour
 
     void Start(){
         if(cam.orthographic){
-            zoom = 5.0f;
+            zoom = maxSize;
         }
         else{
-            zoom = 59.0f;
+            zoom = maxFOV;
         }
     }
 
@@ -53,12 +54,12 @@ public class CameraZoom : MonoBehaviour
         if(cam.orthographic){
            zoom = Mathf.Clamp(zoom, minSize, maxSize);
            zoom -= current * zoomSpeed * Time.deltaTime;
-           cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoom, Time.deltaTime * 2.0f);
+           cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoom, Time.deltaTime * adjustedTime);
         }
         else{
             zoom = Mathf.Clamp(zoom, minFOV, maxFOV);
             zoom -= current * zoomSpeed * Time.deltaTime;
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, zoom, Time.deltaTime * 2.0f);
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, zoom, Time.deltaTime * adjustedTime);
         }
     }
 }

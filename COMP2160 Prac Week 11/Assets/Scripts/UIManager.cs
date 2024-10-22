@@ -20,6 +20,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform target;
 #endregion 
 
+#region constants
+    private float cameraDist = 9.0f;
+#endregion
+
 #region Singleton
     static private UIManager instance;
     static public UIManager Instance
@@ -80,7 +84,7 @@ public class UIManager : MonoBehaviour
     private void MoveCrosshair() 
     {
         Vector2 mousePos = mouseAction.ReadValue<Vector2>();
-        Vector3 Pos = new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane + 9);
+        Vector3 Pos = new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane + cameraDist);
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Pos);
         crosshair.transform.position = worldPos;
     }
