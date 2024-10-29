@@ -45,14 +45,9 @@ public class UIManager : MonoBehaviour
 #endregion
 
 [SerializeField] private bool isometric;
-Plane m_Plane;
- Vector3 m_DistanceFromCamera;
- public float m_DistanceZ = 8.0f;
-
-void Start(){
-    m_DistanceFromCamera = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z - m_DistanceZ);
-    m_Plane = new Plane(Vector3.forward,m_DistanceFromCamera);
-}
+    RaycastHit hit;
+    Ray ray;
+    [SerializeField] private LayerMask layerMask;
 
 #region Init & Destroy
     void Awake()
@@ -95,12 +90,10 @@ void Start(){
     {
         Vector2 mousePos = mouseAction.ReadValue<Vector2>();
         Vector3 Pos = new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane + cameraDist);
-        float enter = 0.0f;
         if(isometric){
             Ray ray = Camera.main.ScreenPointToRay(Pos);
-            if(m_Plane.Raycast(ray, out enter)){
-            Vector3 RayPos = ray.GetPoint(10);
-            crosshair.transform.position = RayPos;
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)){
+                crosshair.transform.position = hit.point;
             }
         }
         else{
